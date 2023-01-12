@@ -186,6 +186,7 @@ async function updateEmployeeRole(){
         db.query('UPDATE employee SET role_id = ? WHERE employee.id = ?;', [roleSelected['id'], employeeSelected['id']], (err, result) => {
             if(err) throw err;
             console.log('Employee ' + employeeSelected['name'] + ' was updated!');
+            promptMenu();
         })
     }) 
     
@@ -193,8 +194,7 @@ async function updateEmployeeRole(){
 //The folowing functions are used solely for inquirer's promt list, all functions update the data(employees, roles and departments) arrays
 getEmployeeData= async() => {
     await db.promise().query('SELECT CONCAT(first_name, " ", last_name) AS name, id FROM employee;').then((result) => {
-        dataEmployee = result[0];
-        console.log(dataEmployee);
+        dataEmployee = result[0];        
     })
 }
 getRoles = async() => {
@@ -209,7 +209,6 @@ getManager = async() => {
 };
 //hybrid function that updates inquirer's prompt list and also displays department table
 getDepartments = async (...args) => {
-    console.log('get dept called');
     await db.promise().query('SELECT department_name AS name, id FROM department;').then((result) => {
         dataDepartments = result[0]; 
         if(args[0] == 1){
